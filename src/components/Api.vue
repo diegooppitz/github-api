@@ -5,7 +5,7 @@
       type="text"
       v-model="userName"
     />
-    <button @click="getRepos()">Buscar</button>
+    <button class="searchButton" @click="getRepos()">Buscar</button>
 
     <template v-if="verif">
       <ul>
@@ -111,5 +111,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  
+@import url(../assets/sass/_main.scss);
 </style>

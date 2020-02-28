@@ -1,0 +1,19 @@
+input,
+.searchButton {
+  display: inline-block;
+  border-radius: 2px;
+}
+
+input {
+  width: 200px;
+  height: 20px;
+}
+
+.searchButton {
+  width: 100px;
+  height: 26px;
+  border: none;
+  background-color: blue;
+  color: #ffffff;
+  opacity: 0.7;
+}
