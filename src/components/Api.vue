@@ -1,50 +1,63 @@
 <template>
   <div class="api">
     <input
-      placeholder="Digite nome do usuário"
+      placeholder="Digite um username do Github"
       type="text"
       v-model="userName"
     />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
     <template v-if="verif">
-      <ul>
-        <li>
-          <h2>Login {{ login }}</h2>
-        </li>
-        <li>
-          <p>Id {{ id }}</p>
-        </li>
-        <li>
-          <img :src="avatar" alt />
-        </li>
-      </ul>
+      <div class="user">
+        <div>
+          Username:
+          <h3>
+            <a target="_blank" :href="`https://github.com/${userName}`">
+              {{ login }}
+            </a>
+          </h3>
+          Id:
+          <h4>{{ id }}</h4>
+        </div>
+        <img :src="avatar" />
+      </div>
     </template>
 
-    <button v-if="verif && !starredRepos" @click="favoritesRepos()">
+    <button
+      class="reposButton"
+      v-if="verif && !starredRepos"
+      @click="favoritesRepos()"
+    >
       Ver repositórios favoritos
     </button>
-    <button v-if="verif && starredRepos" @click="getRepos()">
+    <button
+      class="reposButton"
+      v-if="verif && starredRepos"
+      @click="getRepos()"
+    >
       Ver repositórios públicos
     </button>
 
-    <div v-if="!starredRepos && verif">
-      <h2>Repositórios públicos</h2>
+    <div class="repos" v-if="!starredRepos && verif">
+      <h3 class="reposTitle">Repositórios públicos:</h3>
       <template class="currency" v-for="repos in reposRequestV.data">
         <div :key="repos.name">
-          <a :href="`https://github.com/${userName + '/' + repos.name}`">
-            <h3>{{ repos.name }}</h3>
+          <a
+            target="_blank"
+            :href="`https://github.com/${userName + '/' + repos.name}`"
+          >
+            <h4>{{ repos.name }}</h4>
           </a>
         </div>
       </template>
     </div>
 
-    <div v-if="starredRepos">
-      <h2>Repositórios favoritos</h2>
+    <div class="repos" v-if="starredRepos">
+      <h3 class="reposTitle">Repositórios favoritos:</h3>
       <template v-for="starred in starredRequestV.data">
         <div :key="starred.name">
           <a :href="`https://github.com/${userName + '/' + starred.name}`">
-            <h3>{{ starred.name }}</h3>
+            <h4>{{ starred.name }}</h4>
           </a>
         </div>
       </template>
@@ -56,9 +69,6 @@
 import axios from "axios";
 export default {
   name: "Api",
-  props: {
-    msg: String
-  },
   data() {
     return {
       info: "",
@@ -111,5 +121,93 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import url(../assets/sass/_main.scss);
+// Geral
+.api {
+  position: absolute;
+  text-align: center;
+  transform: translate(-50%, 0);
+  left: 50%;
+  top: 25%;
+}
+
+// Search
+
+input {
+  width: 250px;
+  height: 30px;
+  font-size: 16px;
+  padding-left: 15px;
+}
+
+input:focus {
+  outline: none;
+}
+// User
+.user h3,
+h4 {
+  display: inline-block;
+}
+
+.user h3 {
+  margin-right: 35px;
+}
+
+img {
+  width: 300px;
+  height: 300px;
+}
+
+// Repos
+.reposTitle {
+  margin: 40px 0 20px 0;
+}
+
+.repos a {
+  margin: 0;
+}
+
+.repos h4 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+// Buttons
+input,
+.searchButton {
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.searchButton,
+.reposButton {
+  font-weight: 900;
+  border: none;
+  background-color: blue;
+  color: #ffffff;
+  opacity: 0.7;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.searchButton {
+  width: 130px;
+  height: 35px;
+  font-size: 14px;
+  padding-top: 3px;
+
+  @media (max-width: 768px) {
+    margin-top: 20px;
+    width: 200px;
+  }
+}
+
+.reposButton {
+  margin-top: 25px;
+  font-size: 16px;
+  width: 250px;
+  height: 45px;
+}
 </style>
