@@ -48,6 +48,7 @@
           >
             <h4>{{ repos.name }}</h4>
           </a>
+          <p>{{ repos.description }}</p>
         </div>
       </template>
     </div>
@@ -59,16 +60,23 @@
           <a :href="`https://github.com/${userName + '/' + starred.name}`">
             <h4>{{ starred.name }}</h4>
           </a>
+          <p>{{ starred.description }}</p>
         </div>
       </template>
     </div>
+    <pulse-loader :loading="loading" :color="color" :size="size"></pulse-loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+
 export default {
   name: "Api",
+  components: {
+    PulseLoader
+  },
   data() {
     return {
       info: "",
@@ -128,13 +136,13 @@ export default {
   transform: translate(-50%, 0);
   left: 50%;
   top: 25%;
+  margin-bottom: 20px;
 }
 
 // Search
-
 input {
-  width: 250px;
-  height: 30px;
+  width: 260px;
+  height: 40px;
   font-size: 16px;
   padding-left: 15px;
 }
@@ -168,7 +176,16 @@ img {
 
 .repos h4 {
   margin: 10px 0;
-  font-size: 18px;
+  font-size: 20px;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.repos p {
+  margin: 0 0 15px 0;
+  font-size: 12px;
 }
 
 // Buttons
@@ -194,9 +211,9 @@ input,
 
 .searchButton {
   width: 130px;
-  height: 35px;
-  font-size: 14px;
-  padding-top: 3px;
+  height: 45px;
+  font-size: 16px;
+  padding-top: 2px;
 
   @media (max-width: 768px) {
     margin-top: 20px;
