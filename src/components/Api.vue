@@ -2,52 +2,37 @@
   <div class="api">
     <h1>Api do Github</h1>
     <p class="searchText">Busque dados de users do Github</p>
-    <input
-      placeholder="Digite um username do Github"
-      type="text"
-      v-model="userName"
-    />
+    <input placeholder="Digite um username do Github" type="text" v-model="userName" />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
     <pulse-loader v-if="loading"></pulse-loader>
-    <template v-if="verif && !loading">
+    <template v-if="!loading && valid && verif">
       <div class="user">
         <div>
           Username:
           <h3>
             <a target="_blank" :href="`https://github.com/${userName}`">{{ login }}</a>
-          </h3>
-          Id:
+          </h3>Id:
           <h4>{{ id }}</h4>
         </div>
         <img :src="avatar" />
       </div>
-    </template>
-
-    <template v-if="verif && !loading">
       <button
         class="reposButton"
         v-if="!starredRepos"
         @click="starredRepos = !starredRepos"
-      >
-        Ver repositórios favoritos
-      </button>
+      >Ver repositórios favoritos</button>
       <button
         class="reposButton"
         v-if="starredRepos"
         @click="starredRepos = !starredRepos"
-      >
-        Ver repositórios públicos
-      </button>
+      >Ver repositórios públicos</button>
 
       <div class="repos" v-if="!starredRepos">
         <h3 class="reposTitle">Repositórios públicos:</h3>
         <template class="currency" v-for="repos in reposRequestV.data">
           <div :key="repos.name">
-            <a
-              target="_blank"
-              :href="`https://github.com/${userName + '/' + repos.name}`"
-            >
+            <a target="_blank" :href="`https://github.com/${userName + '/' + repos.name}`">
               <h4>{{ repos.name }}</h4>
             </a>
             <p>{{ repos.description }}</p>
@@ -66,6 +51,9 @@
           </div>
         </template>
       </div>
+    </template>
+    <template v-if="!valid && verif">
+      <div class="msgError">{{msgError}}</div>
     </template>
   </div>
 </template>
@@ -89,14 +77,19 @@ export default {
       login: "",
       id: "",
       avatar: "",
-      verif: false,
       starredRepos: false,
-      loading: false
+      loading: false,
+      valid: true,
+      verif: false,
+      msgError: ""
     };
   },
   methods: {
     getRepos() {
       this.loading = true;
+      this.valid = true;
+      this.verif = true;
+      this.starredRepos = false;
 
       axios
         .all([this.userRequest(), this.reposRequest(), this.starredRequest()])
@@ -109,10 +102,16 @@ export default {
             this.starredRequestV = starredResponse;
           })
         )
+        .catch(error => {
+          this.valid = false;
+          if (error.response.status == 404) {
+            return (this.msgError = "Este username é inexistente");
+          } else if (error.response.status == 403) {
+            return (this.msgError =
+              "Você atingiu o limite de requisições da Api do Github");
+          }
+        })
         .finally(() => (this.loading = false));
-
-      this.verif = true;
-      this.starredRepos = false;
     },
     userRequest() {
       return axios.get("https://api.github.com/users/" + this.userName);
@@ -139,8 +138,8 @@ export default {
   text-align: center;
   transform: translate(-50%, 0);
   left: 50%;
-  top: 15%;
-  margin-bottom: 20px;
+  top: 10%;
+  margin-bottom: 10%;
 }
 
 // Search
@@ -162,6 +161,13 @@ input {
 input:focus {
   outline: none;
 }
+
+.msgError {
+  font-size: 24px;
+  position: relative;
+  top: 40px;
+}
+
 // User
 .user h3,
 h4 {
