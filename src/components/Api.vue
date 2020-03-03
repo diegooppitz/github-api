@@ -1,5 +1,7 @@
 <template>
   <div class="api">
+    <h1>Api do Github</h1>
+    <p>Busque dados de users do Github</p>
     <input
       placeholder="Digite um username do Github"
       type="text"
@@ -7,14 +9,13 @@
     />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
-    <template v-if="verif">
+    <pulse-loader v-if="loading"></pulse-loader>
+    <template v-if="verif && !loading">
       <div class="user">
         <div>
           Username:
           <h3>
-            <a target="_blank" :href="`https://github.com/${userName}`">
-              {{ login }}
-            </a>
+            <a target="_blank" :href="`https://github.com/${userName}`">{{ login }}</a>
           </h3>
           Id:
           <h4>{{ id }}</h4>
@@ -23,52 +24,54 @@
       </div>
     </template>
 
-    <button
-      class="reposButton"
-      v-if="verif && !starredRepos"
-      @click="favoritesRepos()"
-    >
-      Ver repositórios favoritos
-    </button>
-    <button
-      class="reposButton"
-      v-if="verif && starredRepos"
-      @click="getRepos()"
-    >
-      Ver repositórios públicos
-    </button>
+    <template v-if="verif && !loading">
+      <button
+        class="reposButton"
+        v-if="!starredRepos"
+        @click="starredRepos = !starredRepos"
+      >
+        Ver repositórios favoritos
+      </button>
+      <button
+        class="reposButton"
+        v-if="starredRepos"
+        @click="starredRepos = !starredRepos"
+      >
+        Ver repositórios públicos
+      </button>
 
-    <div class="repos" v-if="!starredRepos && verif">
-      <h3 class="reposTitle">Repositórios públicos:</h3>
-      <template class="currency" v-for="repos in reposRequestV.data">
-        <div :key="repos.name">
-          <a
-            target="_blank"
-            :href="`https://github.com/${userName + '/' + repos.name}`"
-          >
-            <h4>{{ repos.name }}</h4>
-          </a>
-          <p>{{ repos.description }}</p>
-        </div>
-      </template>
-    </div>
+      <div class="repos" v-if="!starredRepos">
+        <h3 class="reposTitle">Repositórios públicos:</h3>
+        <template class="currency" v-for="repos in reposRequestV.data">
+          <div :key="repos.name">
+            <a
+              target="_blank"
+              :href="`https://github.com/${userName + '/' + repos.name}`"
+            >
+              <h4>{{ repos.name }}</h4>
+            </a>
+            <p>{{ repos.description }}</p>
+          </div>
+        </template>
+      </div>
 
-    <div class="repos" v-if="starredRepos">
-      <h3 class="reposTitle">Repositórios favoritos:</h3>
-      <template v-for="starred in starredRequestV.data">
-        <div :key="starred.name">
-          <a :href="`https://github.com/${userName + '/' + starred.name}`">
-            <h4>{{ starred.name }}</h4>
-          </a>
-          <p>{{ starred.description }}</p>
-        </div>
-      </template>
-    </div>
-    <pulse-loader :loading="loading" :color="color" :size="size"></pulse-loader>
+      <div class="repos" v-if="starredRepos">
+        <h3 class="reposTitle">Repositórios favoritos:</h3>
+        <template v-for="starred in starredRequestV.data">
+          <div :key="starred.name">
+            <a :href="`https://github.com/${userName + '/' + starred.name}`">
+              <h4>{{ starred.name }}</h4>
+            </a>
+            <p>{{ starred.description }}</p>
+          </div>
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+// import Vue from 'vue'
 import axios from "axios";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
@@ -87,11 +90,14 @@ export default {
       id: "",
       avatar: "",
       verif: false,
-      starredRepos: false
+      starredRepos: false,
+      loading: false
     };
   },
   methods: {
     getRepos() {
+      this.loading = true;
+
       axios
         .all([this.userRequest(), this.reposRequest(), this.starredRequest()])
         .then(
@@ -102,7 +108,8 @@ export default {
             this.reposRequestV = reposResponse;
             this.starredRequestV = starredResponse;
           })
-        );
+        )
+        .finally(() => (this.loading = false));
 
       this.verif = true;
       this.starredRepos = false;
@@ -119,9 +126,6 @@ export default {
       return axios.get(
         "https://api.github.com/users/" + this.userName + "/starred"
       );
-    },
-    favoritesRepos() {
-      return (this.starredRepos = true);
     }
   }
 };
@@ -135,7 +139,7 @@ export default {
   text-align: center;
   transform: translate(-50%, 0);
   left: 50%;
-  top: 25%;
+  top: 15%;
   margin-bottom: 20px;
 }
 
@@ -199,7 +203,7 @@ input,
 .reposButton {
   font-weight: 900;
   border: none;
-  background-color: blue;
+  background-color: #0000ff;
   color: #ffffff;
   opacity: 0.7;
   cursor: pointer;
