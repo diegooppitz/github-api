@@ -1,7 +1,7 @@
 <template>
   <div class="api">
     <h1>Api do Github</h1>
-    <p>Busque dados de users do Github</p>
+    <p class="searchText">Busque dados de users do Github</p>
     <input
       placeholder="Digite um username do Github"
       type="text"
@@ -144,6 +144,14 @@ export default {
 }
 
 // Search
+h1 {
+  margin-bottom: 5px;
+}
+
+.searchText {
+  margin-bottom: 40px;
+}
+
 input {
   width: 260px;
   height: 40px;
