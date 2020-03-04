@@ -13,11 +13,8 @@
 
 <script>
 export default {
+  name: "User",
   props: {
-    cars: {
-      type: Object,
-      default: () => {}
-    },
     login: {
       type: String,
       default: ""
@@ -31,8 +28,8 @@ export default {
       default: ""
     },
     id: {
-      type: String,
-      default: ""
+      type: Number,
+      default: null
     }
   }
 };

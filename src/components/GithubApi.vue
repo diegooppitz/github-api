@@ -1,50 +1,26 @@
 <template>
-  <div class="api">
+  <div class="github-api">
     <h1>Api do Github</h1>
     <p class="searchText">Busque dados de users do Github</p>
-    <input placeholder="Digite um username do Github" type="text" v-model="userName" />
+    <input
+      placeholder="Digite um username do Github"
+      type="text"
+      v-model="userName"
+    />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
     <pulse-loader v-if="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
-      <User :login="login" :userName="userName" :avatar="avatar" :id="id" :cars="cars"></User>
-      <button
-        class="reposButton"
-        v-if="!starredRepos"
-        @click="starredRepos = !starredRepos"
-      >Ver repositórios favoritos</button>
-      <button
-        class="reposButton"
-        v-if="starredRepos"
-        @click="starredRepos = !starredRepos"
-      >Ver repositórios públicos</button>
-
-      <div class="repos" v-if="!starredRepos">
-        <h3 class="reposTitle">Repositórios públicos:</h3>
-        <template class="currency" v-for="repos in reposRequestV.data">
-          <div :key="repos.name">
-            <a target="_blank" :href="`https://github.com/${userName + '/' + repos.name}`">
-              <h4>{{ repos.name }}</h4>
-            </a>
-            <p>{{ repos.description }}</p>
-          </div>
-        </template>
-      </div>
-
-      <div class="repos" v-if="starredRepos">
-        <h3 class="reposTitle">Repositórios favoritos:</h3>
-        <template v-for="starred in starredRequestV.data">
-          <div :key="starred.name">
-            <a :href="`https://github.com/${userName + '/' + starred.name}`">
-              <h4>{{ starred.name }}</h4>
-            </a>
-            <p>{{ starred.description }}</p>
-          </div>
-        </template>
-      </div>
-    </template>
-    <template v-if="!valid && verif">
-      <div class="msgError">{{msgError}}</div>
+      <User :login="login" v-model="userName" :avatar="avatar" :id="id"></User>
+      <ListRepos
+        :userName="userName"
+        :starredRepos="starredRepos"
+        :reposRequestV="reposRequestV"
+        :starredRequestV="starredRequestV"
+        @update="starredRepos = $event"
+      >
+      </ListRepos>
+      <div class="msgError">{{ msgError }}</div>
     </template>
   </div>
 </template>
@@ -54,16 +30,17 @@
 import axios from "axios";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import User from "@/components/User";
+import ListRepos from "@/components/ListRepos";
 
 export default {
   name: "GithubApi",
   components: {
     PulseLoader,
-    User
+    User,
+    ListRepos
   },
   data() {
     return {
-      cars: { brands: "tesla", year: "2020" },
       info: "",
       userName: "",
       reposRequestV: {},
@@ -127,7 +104,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 // Geral
-.api {
+.github-api {
   position: absolute;
   text-align: center;
   transform: translate(-50%, 0);
@@ -162,38 +139,14 @@ input:focus {
   top: 40px;
 }
 
-// Repos
-.reposTitle {
-  margin: 40px 0 20px 0;
-}
-
-.repos a {
-  margin: 0;
-}
-
-.repos h4 {
-  margin: 10px 0;
-  font-size: 20px;
-
-  &:hover {
-    opacity: 0.7;
-  }
-}
-
-.repos p {
-  margin: 0 0 15px 0;
-  font-size: 12px;
-}
-
-// Buttons
+// Search Button
 input,
 .searchButton {
   display: inline-block;
   border-radius: 2px;
 }
 
-.searchButton,
-.reposButton {
+.searchButton {
   font-weight: 900;
   border: none;
   background-color: #0000ff;
@@ -216,12 +169,5 @@ input,
     margin-top: 20px;
     width: 200px;
   }
-}
-
-.reposButton {
-  margin-top: 25px;
-  font-size: 16px;
-  width: 250px;
-  height: 45px;
 }
 </style>
