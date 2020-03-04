@@ -12,7 +12,8 @@
           Username:
           <h3>
             <a target="_blank" :href="`https://github.com/${userName}`">{{ login }}</a>
-          </h3>Id:
+          </h3>
+          Id:
           <h4>{{ id }}</h4>
         </div>
         <img :src="avatar" />
@@ -62,9 +63,10 @@
 // import Vue from 'vue'
 import axios from "axios";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+// import User from "./components/User.vue";
 
 export default {
-  name: "Api",
+  name: "GithubApi",
   components: {
     PulseLoader
   },

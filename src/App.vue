@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Api></Api>
+    <GithubApi></GithubApi>
   </div>
 </template>
 
 <script>
-import Api from "./components/Api.vue";
+import GithubApi from "./components/GithubApi.vue";
 
 export default {
   name: "App",
   components: {
-    Api
+    GithubApi
   }
 };
 </script>
