@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GithubApi from "./components/GithubApi.vue";
+import GithubApi from "@/components/GithubApi";
 
 export default {
   name: "App",

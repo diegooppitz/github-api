@@ -7,17 +7,7 @@
 
     <pulse-loader v-if="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
-      <div class="user">
-        <div>
-          Username:
-          <h3>
-            <a target="_blank" :href="`https://github.com/${userName}`">{{ login }}</a>
-          </h3>
-          Id:
-          <h4>{{ id }}</h4>
-        </div>
-        <img :src="avatar" />
-      </div>
+      <User :login="login" :userName="userName" :avatar="avatar" :id="id" :cars="cars"></User>
       <button
         class="reposButton"
         v-if="!starredRepos"
@@ -63,15 +53,17 @@
 // import Vue from 'vue'
 import axios from "axios";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-// import User from "./components/User.vue";
+import User from "@/components/User";
 
 export default {
   name: "GithubApi",
   components: {
-    PulseLoader
+    PulseLoader,
+    User
   },
   data() {
     return {
+      cars: { brands: "tesla", year: "2020" },
       info: "",
       userName: "",
       reposRequestV: {},
@@ -168,21 +160,6 @@ input:focus {
   font-size: 24px;
   position: relative;
   top: 40px;
-}
-
-// User
-.user h3,
-h4 {
-  display: inline-block;
-}
-
-.user h3 {
-  margin-right: 35px;
-}
-
-img {
-  width: 300px;
-  height: 300px;
 }
 
 // Repos
