@@ -3,11 +3,11 @@
     <div>
       Username:
       <h3>
-        <a target="_blank" :href="`https://github.com/${userName}`">{{ login }}</a>
+        <a target="_blank" :href="`https://github.com/${userN}`">{{ log }}</a>
       </h3>
-      <h4>{{ id }}</h4>
+      <h4>{{ idUser }}</h4>
     </div>
-    <img :src="avatar" />
+    <img :src="avat" />
   </div>
 </template>
 
@@ -15,19 +15,19 @@
 export default {
   name: "User",
   props: {
-    login: {
+    log: {
       type: String,
       default: ""
     },
-    userName: {
+    userN: {
       type: String,
       default: ""
     },
-    avatar: {
+    avat: {
       type: String,
       default: ""
     },
-    id: {
+    idUser: {
       type: Number,
       default: null
     }

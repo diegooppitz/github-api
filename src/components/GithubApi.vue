@@ -11,13 +11,11 @@
 
     <pulse-loader v-if="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
-      <User :login="login" v-model="userName" :avatar="avatar" :id="id"></User>
+      <User :log="login" v-model="userName" :avat="avatar" :idUser="id"></User>
       <ListRepos
-        :userName="userName"
-        :starredRepos="starredRepos"
-        :reposRequestV="reposRequestV"
-        :starredRequestV="starredRequestV"
-        @update="starredRepos = $event"
+        :userN="userName"
+        :repReqV="reposRequestV"
+        :starReqV="starredRequestV"
       >
       </ListRepos>
       <div class="msgError">{{ msgError }}</div>
@@ -48,7 +46,6 @@ export default {
       login: "",
       id: "",
       avatar: "",
-      starredRepos: false,
       loading: false,
       valid: true,
       verif: false,
@@ -60,7 +57,6 @@ export default {
       this.loading = true;
       this.valid = true;
       this.verif = true;
-      this.starredRepos = false;
 
       axios
         .all([this.userRequest(), this.reposRequest(), this.starredRequest()])

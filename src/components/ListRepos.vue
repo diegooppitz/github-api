@@ -1,21 +1,13 @@
 <template>
   <div class="listRepos">
-    <button
-      class="reposButton"
-      v-if="!starredRepos"
-      @click="starredRepos = !starredRepos"
-    >Ver repositórios favoritos</button>
-    <button
-      class="reposButton"
-      v-if="starredRepos"
-      @click="starredRepos = !starredRepos"
-    >Ver repositórios públicos</button>
+    <button class="reposButton" v-if="!starRep" @click="updateRepos()">Ver repositórios favoritos</button>
+    <button class="reposButton" v-if="starRep" @click="updateRepos()">Ver repositórios públicos</button>
 
-    <div class="repos" v-if="!starredRepos">
+    <div class="repos" v-if="!starRep">
       <h3 class="reposTitle">Repositórios públicos:</h3>
-      <template class="currency" v-for="repos in reposRequestV.data">
+      <template class="currency" v-for="repos in repReqV.data">
         <div :key="repos.name">
-          <a target="_blank" :href="`https://github.com/${userName + '/' + repos.name}`">
+          <a target="_blank" :href="`https://github.com/${userN + '/' + repos.name}`">
             <h4>{{ repos.name }}</h4>
           </a>
           <p>{{ repos.description }}</p>
@@ -23,11 +15,11 @@
       </template>
     </div>
 
-    <div class="repos" v-if="starredRepos">
+    <div class="repos" v-if="starRep">
       <h3 class="reposTitle">Repositórios favoritos:</h3>
-      <template v-for="starred in starredRequestV.data">
+      <template v-for="starred in starReqV.data">
         <div :key="starred.name">
-          <a :href="`https://github.com/${userName + '/' + starred.name}`">
+          <a :href="`https://github.com/${userN + '/' + starred.name}`">
             <h4>{{ starred.name }}</h4>
           </a>
           <p>{{ starred.description }}</p>
@@ -40,22 +32,28 @@
 <script>
 export default {
   name: "ListRepos",
+  data() {
+    return {
+      starRep: null
+    };
+  },
   props: {
-    userName: {
+    userN: {
       type: String,
       default: ""
     },
-    starredRepos: {
-      type: Boolean,
-      default: null
-    },
-    reposRequestV: {
+    repReqV: {
       type: Object,
       default: () => {}
     },
-    starredRequestV: {
+    starReqV: {
       type: Object,
       default: () => {}
+    }
+  },
+  methods: {
+    updateRepos() {
+      this.starRep = !this.starRep;
     }
   }
 };
