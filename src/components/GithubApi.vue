@@ -18,8 +18,8 @@
         :starReqV="starredRequestV"
       >
       </ListRepos>
-      <div class="msgError">{{ msgError }}</div>
     </template>
+    <div v-show="!valid" class="msgError">{{ msgError }}</div>
   </div>
 </template>
 
@@ -57,6 +57,7 @@ export default {
       this.loading = true;
       this.valid = true;
       this.verif = true;
+      this.msgError = "";
 
       axios
         .all([this.userRequest(), this.reposRequest(), this.starredRequest()])
@@ -71,6 +72,7 @@ export default {
         )
         .catch(error => {
           this.valid = false;
+          console.log("ue")
           if (error.response.status == 404) {
             return (this.msgError = "Este username é inexistente");
           } else if (error.response.status == 403) {
@@ -97,8 +99,8 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
 // Geral
 .github-api {
   position: absolute;
@@ -148,22 +150,19 @@ input,
   background-color: #0000ff;
   color: #ffffff;
   opacity: 0.7;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.5;
-  }
-}
-
-.searchButton {
   width: 130px;
   height: 45px;
   font-size: 16px;
   padding-top: 2px;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     margin-top: 20px;
     width: 200px;
+  }
+
+  &:hover {
+    opacity: 0.5;
   }
 }
 </style>

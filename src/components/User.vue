@@ -5,6 +5,7 @@
       <h3>
         <a target="_blank" :href="`https://github.com/${userN}`">{{ log }}</a>
       </h3>
+      Id:
       <h4>{{ idUser }}</h4>
     </div>
     <img :src="avat" />
