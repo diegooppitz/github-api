@@ -1,5 +1,7 @@
 # github-api
 
+## [Try it](https://github-api-v2.netlify.com/)
+
 ## Project setup
 ```
 yarn install
