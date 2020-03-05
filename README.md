@@ -1,4 +1,4 @@
-# github-api-v2
+# github-api
 
 ## Project setup
 ```
