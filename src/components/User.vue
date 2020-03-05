@@ -3,7 +3,7 @@
     <div>
       Username:
       <h3>
-        <a target="_blank" :href="`https://github.com/${userN}`">{{ log }}</a>
+        <a target="_blank" :href="`https://github.com/${log}`">{{ log }}</a>
       </h3>
       Id:
       <h4>{{ idUser }}</h4>

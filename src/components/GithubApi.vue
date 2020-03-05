@@ -24,7 +24,6 @@
 </template>
 
 <script>
-// import Vue from 'vue'
 import axios from "axios";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import User from "@/components/User";
