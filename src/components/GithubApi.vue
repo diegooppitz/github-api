@@ -9,7 +9,7 @@
     />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
-    <pulse-loader v-if="loading"></pulse-loader>
+    <pulse-loader v-show="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
       <User :log="login" v-model="userName" :avat="avatar" :idUser="id"></User>
       <ListRepos
@@ -25,7 +25,7 @@
 
 <script>
 import axios from "axios";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import PulseLoader from "@/components/PulseLoader.vue";
 import User from "@/components/User";
 import ListRepos from "@/components/ListRepos";
 
@@ -71,7 +71,6 @@ export default {
         )
         .catch(error => {
           this.valid = false;
-          console.log("ue")
           if (error.response.status == 404) {
             return (this.msgError = "Este username é inexistente");
           } else if (error.response.status == 403) {
