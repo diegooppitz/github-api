@@ -5,7 +5,7 @@
     <input
       placeholder="Digite um username do Github"
       type="text"
-      v-model="userName"
+      v-model="userName" 
     />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
