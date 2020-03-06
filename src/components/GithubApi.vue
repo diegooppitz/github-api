@@ -16,6 +16,7 @@
         :userN="userName"
         :repReqV="reposRequestV"
         :starReqV="starredRequestV"
+        :colab="colaborators"
       >
       </ListRepos>
     </template>
@@ -63,15 +64,21 @@ export default {
         .all([this.userRequest(), this.reposRequest(), this.starredRequest()])
         .then(
           axios.spread((userResponse, reposResponse, starredResponse) => {
+            // User
             this.login = userResponse.data.login;
             this.id = userResponse.data.id;
             this.avatar = userResponse.data.avatar_url;
+            this.company = userResponse.data.company;
+
+            // Public repos
             this.reposRequestV = reposResponse;
+
+            // Starred Repos
             this.starredRequestV = starredResponse;
+
+            // Test
             this.user = userResponse.data;
             this.numPublicRepos = userResponse.data.public_repos;
-            this.company = userResponse.data.company;
-            this.colaborators = reposResponse.data.colaborators
           })
         )
         .catch(error => {
@@ -86,9 +93,6 @@ export default {
         .finally(() => (this.loading = false));
 
       // console.log(this.user);
-      console.log(this.reposRequestV.data);
-
-      // console.log(this.numPublicRepos);
     },
     userRequest() {
       return axios.get("https://api.github.com/users/" + this.userName);
