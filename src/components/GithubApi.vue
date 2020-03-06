@@ -5,13 +5,13 @@
     <input
       placeholder="Digite um username do Github"
       type="text"
-      v-model="userName" 
+      v-model="userName"
     />
     <button class="searchButton" @click="getRepos()">Buscar</button>
 
     <pulse-loader v-show="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
-      <User :log="login" v-model="userName" :avat="avatar" :idUser="id"></User>
+      <User :log="login" v-model="userName" :avat="avatar" :idUser="id" :comp="company"></User>
       <ListRepos
         :userN="userName"
         :repReqV="reposRequestV"
@@ -48,7 +48,8 @@ export default {
       loading: false,
       valid: true,
       verif: false,
-      msgError: ""
+      msgError: "",
+      colaborators: ""
     };
   },
   methods: {
@@ -67,6 +68,10 @@ export default {
             this.avatar = userResponse.data.avatar_url;
             this.reposRequestV = reposResponse;
             this.starredRequestV = starredResponse;
+            this.user = userResponse.data;
+            this.numPublicRepos = userResponse.data.public_repos;
+            this.company = userResponse.data.company;
+            this.colaborators = reposResponse.data.colaborators
           })
         )
         .catch(error => {
@@ -79,6 +84,11 @@ export default {
           }
         })
         .finally(() => (this.loading = false));
+
+      // console.log(this.user);
+      console.log(this.reposRequestV.data);
+
+      // console.log(this.numPublicRepos);
     },
     userRequest() {
       return axios.get("https://api.github.com/users/" + this.userName);
@@ -98,7 +108,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 // Geral
 .github-api {
   position: absolute;

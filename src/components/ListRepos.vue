@@ -64,8 +64,18 @@ export default {
   margin: 40px 0 20px 0;
 }
 
+.repos {
+  text-align: left;
+  width: 80vw;
+}
+
+.repos a,
+p {
+  display: inline-block;
+}
+
 .repos a {
-  margin: 0;
+  margin: 0 20px 0 0;
 }
 
 .repos h4 {
@@ -79,7 +89,7 @@ export default {
 
 .repos p {
   margin: 0 0 15px 0;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .reposButton {
