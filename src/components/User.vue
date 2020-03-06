@@ -7,6 +7,7 @@
       </h3>
       Id:
       <h4>{{ idUser }}</h4>
+      <h4 class="company" v-show="comp != null">{{ comp }}</h4>
     </div>
     <img :src="avat" />
   </div>
@@ -28,6 +29,10 @@ export default {
       type: String,
       default: ""
     },
+    comp: {
+      type: String,
+      default: ""
+    },
     idUser: {
       type: Number,
       default: null
@@ -42,6 +47,10 @@ h4 {
   display: inline-block;
 }
 
+.company {
+  margin-left: 40px;
+}
+
 .user h3 {
   margin-right: 35px;
 }
@@ -49,5 +58,6 @@ h4 {
 img {
   width: 300px;
   height: 300px;
+  border-radius: 20%;
 }
 </style>
