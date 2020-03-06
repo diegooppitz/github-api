@@ -1,16 +1,28 @@
 <template>
   <div class="listRepos">
-    <button class="reposButton" v-if="!starRep" @click="updateRepos()">Ver repositórios favoritos</button>
-    <button class="reposButton" v-if="starRep" @click="updateRepos()">Ver repositórios públicos</button>
+    <button class="reposButton" v-if="!starRep" @click="updateRepos()">
+      Ver repositórios favoritos
+    </button>
+    <button class="reposButton" v-if="starRep" @click="updateRepos()">
+      Ver repositórios públicos
+    </button>
 
     <div class="repos" v-if="!starRep">
       <h3 class="reposTitle">Repositórios públicos:</h3>
       <template class="currency" v-for="repos in repReqV.data">
         <div :key="repos.name">
-          <a target="_blank" :href="`https://github.com/${userN + '/' + repos.name}`">
+          <a
+            target="_blank"
+            :href="`https://github.com/${userN + '/' + repos.name}`"
+          >
             <h4>{{ repos.name }}</h4>
           </a>
-          <p>{{ repos.description }}</p>
+          <p class="technologies">{{ repos.language }}</p>
+          <p class="date">
+            {{ repos.created_at | moment("calendar", "July 10 2011") }}
+          </p>
+          <br />
+          <p class="description">{{ repos.description }}</p>
         </div>
       </template>
     </div>
@@ -22,7 +34,14 @@
           <a :href="`https://github.com/${userN + '/' + starred.name}`">
             <h4>{{ starred.name }}</h4>
           </a>
-          <p>{{ starred.description }}</p>
+          <p class="technologies">
+            {{ starred.language }}
+          </p>
+          <p class="date">
+            {{ starred.created_at | moment("calendar", "July 10 2011") }}
+          </p>
+          <br />
+          <p class="description">{{ starred.description }}</p>
         </div>
       </template>
     </div>
@@ -30,15 +49,28 @@
 </template>
 
 <script>
+import Vue from "vue";
+const moment = require("moment");
+require("moment/locale/pt-br");
+
+Vue.use(require("vue-moment"), {
+  moment
+});
+
 export default {
   name: "ListRepos",
   data() {
     return {
-      starRep: null
+      starRep: null,
+      technoColor: ""
     };
   },
   props: {
     userN: {
+      type: String,
+      default: ""
+    },
+    colab: {
       type: String,
       default: ""
     },
@@ -54,6 +86,10 @@ export default {
   methods: {
     updateRepos() {
       this.starRep = !this.starRep;
+    },
+    verifTechno() {
+      if( this.starred.name == "javaScript")
+      this.technoColor = "red";
     }
   }
 };
@@ -75,12 +111,12 @@ p {
 }
 
 .repos a {
-  margin: 0 20px 0 0;
+  margin: 0 10px 0 0;
 }
 
 .repos h4 {
-  margin: 10px 0;
-  font-size: 20px;
+  margin: 0;
+  font-size: 18px;
 
   &:hover {
     opacity: 0.7;
@@ -88,8 +124,7 @@ p {
 }
 
 .repos p {
-  margin: 0 0 15px 0;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .reposButton {
@@ -107,5 +142,17 @@ p {
   &:hover {
     opacity: 0.5;
   }
+}
+
+.description {
+  margin: 5px 0 20px 0;
+}
+
+.technologies {
+  margin: 0 10px 0 0;
+}
+
+.date {
+  margin: 0;
 }
 </style>
