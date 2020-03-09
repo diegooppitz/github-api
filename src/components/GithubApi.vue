@@ -84,7 +84,7 @@ export default {
         .catch(error => {
           this.valid = false;
           if (error.response.status == 404) {
-            return (this.msgError = "Este username é inexistente");
+            return (this.msgError = "Este username não existe");
           } else if (error.response.status == 403) {
             return (this.msgError =
               "Você atingiu o limite de requisições da Api do Github");

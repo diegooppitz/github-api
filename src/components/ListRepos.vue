@@ -79,43 +79,34 @@ export default {
         switch (value) {
           case "JavaScript":
             return "burntYellow";
-            break;
           case "TypeScript":
             return "typeScriptColor";
-            break;
           case "React":
             return "coral";
-            break;
+          case "C++":
+            return "DarkOrange";
+          case "C#":
+            return "CSharpColor";
           case "Ruby":
             return "DarkGoldenRod";
-            break;
           case "Java":
             return "dimGrey";
-            break;
           case "PHP":
             return "phpColor";
-            break;
           case "HTML":
             return "htmlColor";
-            break;
           case "Python":
             return "green";
-            break;
           case "CSS":
             return "red";
-            break;
           case "Shell":
             return "blue";
-            break;
           case "Go":
             return "yellow";
-            break;
           case "Vue":
             return "vueColor";
-            break;
           default:
             return "black";
-            break;
         }
       } else {
         return "notTechno";
@@ -133,6 +124,10 @@ export default {
 .repos {
   text-align: left;
   width: 80vw;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+  }
 }
 
 .repos a,
@@ -147,6 +142,10 @@ p {
 .repos h4 {
   margin: 0;
   font-size: 22px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 
   &:hover {
     opacity: 0.7;
@@ -173,18 +172,32 @@ p {
 .description {
   margin: 5px 0 20px 0;
   font-size: 18px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    width: 90%;
+  }
 }
 
 .date {
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 }
 
 .technologies {
   margin: 0 10px 0 0;
-  padding: 3px 12px;
+  padding: 2px 12px;
   font-size: 10px;
   font-weight: 900;
   color: #ffffff;
+
+  @media (max-width: 768px) {
+    padding: 2px 8px;
+    font-size: 9px;
+  }
 }
 
 .blue {
@@ -205,11 +218,19 @@ p {
 }
 
 .coral {
-  background-color: #FF7F50
+  background-color: #ff7f50;
+}
+
+.CSharpColor {
+  background-color: #8467d6;
 }
 
 .DarkGoldenRod {
-  background-color: #B8860B;
+  background-color: #b8860b;
+}
+
+.DarkOrange {
+  background-color: #ff8c00;
 }
 
 .yellow {
