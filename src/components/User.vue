@@ -58,6 +58,6 @@ h4 {
 img {
   width: 300px;
   height: 300px;
-  border-radius: 20%;
+  border-radius: 10px;
 }
 </style>

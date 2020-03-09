@@ -25,10 +25,7 @@
           <a :href="`https://github.com/${userN + '/' + starred.name}`">
             <h4>{{ starred.name }}</h4>
           </a>
-          <p
-            class="technologies"
-            :class="verifTechno(starred.language)"
-          >{{ starred.language }}</p>
+          <p class="technologies" :class="verifTechno(starred.language)">{{ starred.language }}</p>
           <p class="date">{{ starred.created_at | moment("calendar", "July 10 2011") }}</p>
           <br />
           <p class="description">{{ starred.description }}</p>
@@ -82,6 +79,15 @@ export default {
         switch (value) {
           case "JavaScript":
             return "burntYellow";
+            break;
+          case "TypeScript":
+            return "typeScriptColor";
+            break;
+          case "React":
+            return "coral";
+            break;
+          case "Ruby":
+            return "DarkGoldenRod";
             break;
           case "Java":
             return "dimGrey";
@@ -140,16 +146,12 @@ p {
 
 .repos h4 {
   margin: 0;
-  font-size: 18px;
+  font-size: 22px;
 
   &:hover {
     opacity: 0.7;
   }
 }
-
-// .repos p {
-//   font-size: 14px;
-// }
 
 .reposButton {
   font-weight: 900;
@@ -170,6 +172,7 @@ p {
 
 .description {
   margin: 5px 0 20px 0;
+  font-size: 18px;
 }
 
 .date {
@@ -185,7 +188,7 @@ p {
 }
 
 .blue {
-  background-color: #0000FF;
+  background-color: #0000ff;
 }
 
 .burntYellow {
@@ -199,6 +202,14 @@ p {
 
 .black {
   background-color: #000;
+}
+
+.coral {
+  background-color: #FF7F50
+}
+
+.DarkGoldenRod {
+  background-color: #B8860B;
 }
 
 .yellow {
@@ -222,11 +233,11 @@ p {
 }
 
 .phpColor {
-  background-color: #5283A3;
+  background-color: #5283a3;
 }
 
 .typeScriptColor {
-  background-color: #715CC1;
+  background-color: #715cc1;
 }
 
 .vueColor {
