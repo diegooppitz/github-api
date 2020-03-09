@@ -22,10 +22,10 @@
       <h3 class="reposTitle">Repositórios favoritos:</h3>
       <template v-for="starred in starReqV.data">
         <div :key="starred.name">
-          <a :href="`https://github.com/${userN + '/' + starred.name}`">
+          <a target="_blank" :href="`https://github.com/${starred.full_name}`">
             <h4>{{ starred.name }}</h4>
           </a>
-          <p class="technologies" :class="verifTechno(starred.language)">{{ starred.language }}</p>
+          <p class="technologies" target="_blank" :class="verifTechno(starred.language)">{{ starred.language }}</p>
           <p class="date">{{ starred.created_at | moment("calendar", "July 10 2011") }}</p>
           <br />
           <p class="description">{{ starred.description }}</p>
@@ -242,7 +242,7 @@ p {
 }
 
 .green {
-  background-color: green;
+  background-color: #008000;
 }
 
 .orange {
