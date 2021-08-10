@@ -1,13 +1,13 @@
 <template>
   <div class="reposList">
-    <button class="reposButton" v-if="!starRep" @click="updateRepos()">See private repositories</button>
-    <button class="reposButton" v-if="starRep" @click="updateRepos()">See public repositories</button>
+    <button class="reposButton" v-if="!starredReposIsActive" @click="updateRepos()">See private repositories</button>
+    <button class="reposButton" v-if="starredReposIsActive" @click="updateRepos()">See public repositories</button>
 
-    <div class="repos" v-if="!starRep">
+    <div class="repos" v-if="!starredReposIsActive">
       <h3 class="reposTitle">Public repositories:</h3>
-      <template class="currency" v-for="repos in repReqV">
+      <template class="currency" v-for="repos in publicRepos">
         <div :key="repos.name">
-          <a target="_blank" :href="`https://github.com/${userN}/${repos.name}`">
+          <a target="_blank" :href="`https://github.com/${user}/${repos.name}`">
             <h4>{{ repos.name }}</h4>
           </a>
           <p class="technologies" :class="verifTechno(repos.language)">{{ repos.language }}</p>
@@ -18,9 +18,9 @@
       </template>
     </div>
 
-    <div class="repos" v-if="starRep">
+    <div class="repos" v-if="starredReposIsActive">
       <h3 class="reposTitle">Favorite repositories:</h3>
-      <template v-for="starred in starReqV">
+      <template v-for="starred in starredRepos">
         <div :key="starred.name">
           <a target="_blank" :href="`https://github.com/${starred.full_name}`">
             <h4>{{ starred.name }}</h4>
@@ -42,31 +42,27 @@ export default {
   name: "ReposList",
   data() {
     return {
-      starRep: null,
+      starredReposIsActive: null,
       technoColor: ""
     };
   },
   props: {
-    userN: {
+    user: {
       type: String,
       default: ""
     },
-    colab: {
-      type: String,
-      default: ""
-    },
-    repReqV: {
+    publicRepos: {
       type: Array,
       default: () => []
     },
-    starReqV: {
+    starredRepos: {
       type: Array,
       default: () => []
     }
   },
   methods: {
     updateRepos() {
-      this.starRep = !this.starRep;
+      this.starredReposIsActive = !this.starredReposIsActive;
     },
 
     verifTechno(value) {

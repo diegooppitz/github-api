@@ -4,18 +4,18 @@
       <div class="user-content">
         Username:
         <h3>
-          <a target="_blank" :href="`https://github.com/${log}`">{{ log }}</a>
+          <a target="_blank" :href="`https://github.com/${login}`">{{ login }}</a>
         </h3>
       </div>
       <div class="user-content">
         Id:
-        <h4>{{ idUser }}</h4>
+        <h4>{{ userId }}</h4>
       </div>
       <div class="user-content">
-        <h4 class="company" v-show="comp != null">{{ comp }}</h4>
+        <h4 class="company" v-show="company != null">{{ company }}</h4>
       </div>
     </div>
-    <img :src="avat" />
+    <img :src="avatar" />
   </div>
 </template>
 
@@ -23,23 +23,19 @@
 export default {
   name: "User",
   props: {
-    log: {
+    login: {
       type: String,
       default: ""
     },
-    userN: {
+    avatar: {
       type: String,
       default: ""
     },
-    avat: {
+    company: {
       type: String,
       default: ""
     },
-    comp: {
-      type: String,
-      default: ""
-    },
-    idUser: {
+    userId: {
       type: Number,
       default: null
     }

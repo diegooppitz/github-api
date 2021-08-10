@@ -12,12 +12,11 @@
 
     <pulse-loader v-show="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
-      <user :log="login" v-model="username" :avat="avatar" :idUser="id" :comp="company"></user>
+      <user :login="login" v-model="username" :avatar="avatar" :userId="id" :company="company"></user>
       <repos-list
-        :userN="username"
-        :repReqV="reposRequestV"
-        :starReqV="starredRequestV"
-        :colab="colaborators"
+        :user="username"
+        :publicRepos="publicRepos"
+        :starredRepos="starredRepos"
       >
       </repos-list>
     </template>
@@ -44,8 +43,8 @@ export default {
     return {
       info: "",
       username: "",
-      reposRequestV: {},
-      starredRequestV: {},
+      publicRepos: {},
+      starredRepos: {},
       login: "",
       id: "",
       avatar: "",
@@ -78,14 +77,14 @@ export default {
         const data = res?.data
         if (!data) return;
 
-        this.reposRequestV = data;
+        this.publicRepos = data;
       });
 
       getStarredRepos(this.username).then((res) => {
         const data = res?.data
         if (!data) return;
 
-        this.starredRequestV = data;
+        this.starredRepos = data;
       })
       .catch(error => {
         this.valid = false;
