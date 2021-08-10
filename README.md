@@ -1,5 +1,7 @@
 # github-api
 
+## [Access the app](https://users-github-api.netlify.app/)
+
 ## Project setup
 ```
 npm install
