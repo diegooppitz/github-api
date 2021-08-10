@@ -8,7 +8,7 @@
       v-model="username"
       @keypress.enter="getRepos()"
     />
-    <button class="searchButton" @click="getRepos()">Buscar</button>
+    <button class="searchButton" @click="getRepos()">Search</button>
 
     <pulse-loader v-show="loading"></pulse-loader>
     <template v-if="!loading && valid && verif">
@@ -26,8 +26,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import PulseLoader from "@/components/PulseLoader.vue";
+import PulseLoader from "@/components/PulseLoader";
+
+import { getUser, getPublicRepos, getStarredRepos } from '@/services/'
+
 import User from "@/components/User";
 import ReposList from "@/components/ReposList";
 
@@ -61,53 +63,41 @@ export default {
       this.verif = true;
       this.msgError = "";
 
-      axios
-        .all([this.userRequest(), this.reposRequest(), this.starredRequest()])
-        .then(
-          axios.spread((userResponse, reposResponse, starredResponse) => {
-            // User
-            this.login = userResponse.data.login;
-            this.id = userResponse.data.id;
-            this.avatar = userResponse.data.avatar_url;
-            this.company = userResponse.data.company;
+      getUser(this.username).then((res) =>  {
+        const data = res?.data
+        if (!data) return;
 
-            // Public repos
-            this.reposRequestV = reposResponse;
+        // User
+        this.login = data?.login;
+        this.id = data?.id;
+        this.avatar = data?.avatar_url;
+        this.company = data?.company;
+      });
 
-            // Starred Repos
-            this.starredRequestV = starredResponse;
+      getPublicRepos(this.username).then((res) =>  {
+        const data = res?.data
+        if (!data) return;
 
-            // Test
-            this.user = userResponse.data;
-            this.numPublicRepos = userResponse.data.public_repos;
-          })
-        )
-        .catch(error => {
-          this.valid = false;
-          if (error.response.status == 404) {
-            return (this.msgError = "Este username não existe");
-          } else if (error.response.status == 403) {
-            return (this.msgError =
-              "Você atingiu o limite de requisições da Api do Github");
-          }
-        })
-        .finally(() => (this.loading = false));
+        this.reposRequestV = data;
+      });
 
-      // console.log(this.user);
+      getStarredRepos(this.username).then((res) => {
+        const data = res?.data
+        if (!data) return;
+
+        this.starredRequestV = data;
+      })
+      .catch(error => {
+        this.valid = false;
+        if (error.response.status == 404) {
+          return (this.msgError = "This username not found");
+        } else if (error.response.status == 403) {
+          return (this.msgError =
+            "You have reached the limit of requests for the Github API");
+        }
+      })
+      .finally(() => (this.loading = false));
     },
-    userRequest() {
-      return axios.get("https://api.github.com/users/" + this.username);
-    },
-    reposRequest() {
-      return axios.get(
-        "https://api.github.com/users/" + this.username + "/repos"
-      );
-    },
-    starredRequest() {
-      return axios.get(
-        "https://api.github.com/users/" + this.username + "/starred"
-      );
-    }
   }
 };
 </script>

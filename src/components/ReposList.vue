@@ -5,7 +5,7 @@
 
     <div class="repos" v-if="!starRep">
       <h3 class="reposTitle">Public repositories:</h3>
-      <template class="currency" v-for="repos in repReqV.data">
+      <template class="currency" v-for="repos in repReqV">
         <div :key="repos.name">
           <a target="_blank" :href="`https://github.com/${userN}/${repos.name}`">
             <h4>{{ repos.name }}</h4>
@@ -20,7 +20,7 @@
 
     <div class="repos" v-if="starRep">
       <h3 class="reposTitle">Favorite repositories:</h3>
-      <template v-for="starred in starReqV.data">
+      <template v-for="starred in starReqV">
         <div :key="starred.name">
           <a target="_blank" :href="`https://github.com/${starred.full_name}`">
             <h4>{{ starred.name }}</h4>
@@ -56,12 +56,12 @@ export default {
       default: ""
     },
     repReqV: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => []
     },
     starReqV: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => []
     }
   },
   methods: {
